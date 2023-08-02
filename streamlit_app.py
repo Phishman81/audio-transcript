@@ -23,9 +23,12 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
-openai.api_key = "your_api_key"
 
-def count_tokens(input_data, max_tokens=20000, input_type='text'):
+# Get the OpenAI key from Streamlit secrets
+openai.api_key = st.secrets["openai"]["key"]
+
+
+def count_tokens(input_data, max_tokens=20000, input_type='text'):A
     tokenizer = GPT2TokenizerFast.from_pretrained("gpt2")
     
     if input_type == 'text':
