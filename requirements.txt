@@ -1,7 +1,5 @@
 streamlit
 openai
 pandas
-pytube
 transformers
-textwrap3
 yt-dlp
