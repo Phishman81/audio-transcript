@@ -279,7 +279,7 @@ if uploaded_file is not None:
 
 # Summarize with either GPT3 or T5 depending on length of transcript:
 
-  summarized_text = summarize_text(transcription)
+summarized_text = summarize_text(transcription)
   new_token_count = count_tokens(summarized_text)
 
   summarized_text = gpt_summarize_transcript(transcription,token_count)
@@ -325,7 +325,7 @@ if audio_file is not None:
 
         # Summarize with either GPT3 or T5 depending on length of transcript:
         
-            summarized_text = summarize_text(transcription)
+          summarized_text = summarize_text(transcription)
             new_token_count = count_tokens(summarized_text)
         
             summarized_text = gpt_summarize_transcript(transcription, token_count)
