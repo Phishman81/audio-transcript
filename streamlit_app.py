@@ -312,7 +312,7 @@ if audio_file is not None:
 
     try:
         # Get the transcript
-                with open("temp.mp3", "rb") as audio:
+        with open("temp.mp3", "rb") as audio:
             transcription = openai.Audio.translate("whisper-1", audio)["text"]
         st.write("Transcription: ", transcription)
 
