@@ -12,17 +12,12 @@ import logging
 import warnings
 
 import os
-# Supress warnings
 logging.basicConfig(level=logging.CRITICAL)
 warnings.filterwarnings("ignore")
 
-# OpenAI API key
 openai.api_key = "Your OpenAI API Key"
 
-def get_transcript(youtubelink):
-    video_url = youtubelink
 
-    # Create a yt-dlp instance
     ydl_opts = {
         'format': 'bestaudio/best',
         'extractaudio': True,
@@ -31,9 +26,7 @@ def get_transcript(youtubelink):
         'noplaylist': True,
     }
     
-        # Extract video information
         
-        # Download the audio
         
 
     audio_file = "audio_file.mp3"
@@ -48,7 +41,6 @@ def get_transcript(youtubelink):
     with open("full_transcript.txt", "w") as file:
         file.write(thetext)
 
-    # Remove the audio file after processing
     os.remove(audio_file)
 
     return thetext
@@ -65,7 +57,6 @@ def count_tokens(input_data, max_tokens=20000, input_type='text'):
     
         raise ValueError("Invalid input_type. Must be 'text' or 'tokens'")
 
-    # Print the number of tokens
     token_count = len(tokens)
     return token_count
 
@@ -74,17 +65,14 @@ def count_tokens(input_data, max_tokens=20000, input_type='text'):
 def truncate_text_by_tokens(text, max_tokens=3000):
     tokenizer = GPT2TokenizerFast.from_pretrained("gpt2")
     
-    # Tokenize the input text
     tokens = tokenizer.tokenize(text)
 
-    # Truncate tokens to final_max_tokens
     truncated_tokens = tokens[:max_tokens]
 
     trunc_token_len = count_tokens(truncated_tokens, input_type='tokens')
 
     print("Truncated Summary Token Length:"+ str(trunc_token_len))
 
-    # Convert the truncated tokens back to text
     truncated_text = tokenizer.convert_tokens_to_string(truncated_tokens)
 
     return truncated_text
@@ -101,10 +89,8 @@ def summarize_text(text, model_name="t5-small", max_workers=8):
     classifier = pipeline("summarization", model=model_name)
     summarized_text = ""
 
-    # Split the input text into smaller chunks
     chunks = textwrap.wrap(text, width=500, break_long_words=False)
 
-    # Parallelize the summarization of the chunks
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         summaries = executor.map(lambda chunk: summarize_chunk(classifier, chunk), chunks)
         summarized_text = " ".join(summaries)
@@ -130,9 +116,7 @@ def summarize_text(text, model_name="t5-small", max_workers=8):
 
 
 def gpt_summarize_transcript(transcript_text,token_len):
-    # Check the length of the transcript
     
-      # Generate the summary using the OpenAI ChatCompletion API
       response = openai.ChatCompletion.create(
           model="gpt-3.5-turbo",
           messages=[
@@ -147,7 +131,6 @@ def gpt_summarize_transcript(transcript_text,token_len):
           temperature=0.5,
       )
 
-      # Extract the generated summary from the response
       summary = response['choices'][0]['message']['content']
       print("summarized by GPT3")
 
@@ -155,13 +138,11 @@ def gpt_summarize_transcript(transcript_text,token_len):
         file.write(summary)
 
 
-      # Return the summary
       return summary.strip()
     
 
 
 def generate_tweet_thread(transcript_text):
-    # Generate the tweets using the OpenAI ChatCompletion API
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
@@ -178,25 +159,20 @@ def generate_tweet_thread(transcript_text):
         temperature=0.5,
     )
 
-    # Extract the generated tweets from the response
     tweets = response['choices'][0]['message']['content']
     print(tweets)
 
-    # Split the tweets into separate parts
     tweets = tweets.split("\n\n")
     print(tweets)
 
-    # Create a dataframe from the tweets
     df = pd.DataFrame({"tweet": tweets})
     df.to_csv('Tweet_Thread.csv')
 
-    # Return the tweets as a list
     return tweets
 
 
 
 def generate_long_form_article(transcript_text,token_len):
-    # Generate the article outline using the OpenAI ChatCompletion API
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
@@ -213,7 +189,6 @@ def generate_long_form_article(transcript_text,token_len):
         temperature=0.5,
     )
 
-    # Extract the article outline from the response
     outline = response['choices'][0]['message']['content']
     outline_token_count = count_tokens(outline)
     sections = outline.strip().split("\n\n")
@@ -230,9 +205,7 @@ def generate_long_form_article(transcript_text,token_len):
 
 
     generated_sections = []
-    # Loop through each section in the outline
     for section in parsed_data:
-        # Generate the section using the OpenAI ChatCompletion API
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
@@ -247,37 +220,29 @@ def generate_long_form_article(transcript_text,token_len):
             temperature=0.2,
         )
 
-        # Extract the generated section from the response
         generated_section = response['choices'][0]['message']['content']
 
 
-        # Add the generated section to the list of generated sections
         generated_sections.append(generated_section)
 
-    # Combine the generated sections into a finished article
     article = "\n\n".join(generated_sections)
 
-    # Save the article to a text file
     with open("long_form_article.txt", "w") as file:
         file.write(article)
 
-    # Return the article
     return article
 
 
 
-# Get the transcript from the video
 uploaded_file = st.file_uploader("Upload a file", type=["mp3"])
 if uploaded_file is not None:
     transcription = get_transcript(uploaded_file)
 
-# Get the token length of the transcript
 
 
 
 
 
-# Summarize with either GPT3 or T5 depending on length of transcript:
 
 summarized_text = summarize_text(transcription)
 new_token_count = count_tokens(summarized_text)
@@ -287,12 +252,10 @@ new_token_count = count_tokens(summarized_text)
 
 
 
-# Generate the tweet thread using the summary
 tweets = generate_tweet_thread(summarized_text)
 
 
 
-# Generate the long-form article using the summary
 article = generate_long_form_article(summarized_text,new_token_count)
 
 
@@ -303,10 +266,8 @@ article = generate_long_form_article(summarized_text,new_token_count)
 import streamlit as st
 
 
-# Set page title
 st.title("Transcription and Summary App")
 
-# Upload audio file
 audio_file = st.file_uploader("Upload MP3 Audio File", type=["mp3"])
 
 if audio_file is not None:
@@ -314,16 +275,13 @@ if audio_file is not None:
         f.write(audio_file.getbuffer())
 
     try:
-        # Get the transcript
         with open("temp.mp3", "rb") as audio:
             transcription = openai.Audio.translate("whisper-1", audio)["text"]
         st.write("Transcription: ", transcription)
 
-        # Get the token length of the transcript
         
         st.write("Token Count: ", token_count)
 
-        # Summarize with either GPT3 or T5 depending on length of transcript:
         
           summarized_text = summarize_text(transcription)
           new_token_count = count_tokens(summarized_text)
@@ -333,11 +291,9 @@ if audio_file is not None:
 
         st.write("Summarized Text: ", summarized_text)
 
-        # Generate the tweet thread using the summary
         tweets = generate_tweet_thread(summarized_text)
         st.write("Tweets: ", tweets)
 
-        # Generate the long-form article using the summary
         article = generate_long_form_article(summarized_text, new_token_count)
         st.write("Article: ", article)
 
