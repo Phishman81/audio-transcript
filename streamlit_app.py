@@ -1,5 +1,20 @@
 
 import streamlit as st
+
+# Get the password from Streamlit secrets
+correct_password = st.secrets["password"]["value"]
+
+password_placeholder = st.empty()
+
+# Create a text input for the password
+password = password_placeholder.text_input("Enter the password", type="password")
+
+if password != correct_password:
+    st.error("The password you entered is incorrect.")
+    st.stop()
+
+st.title("Title of your Streamlit app")
+
 import openai
 from transformers import T5Tokenizer, T5ForConditionalGeneration, GPT2TokenizerFast, pipeline
 import textwrap
