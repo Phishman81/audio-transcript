@@ -29,11 +29,11 @@ def get_transcript(youtubelink):
         'outtmpl': 'audio_file.mp3',
         'noplaylist': True,
     }
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+    
         # Extract video information
-        video_info = ydl.extract_info(video_url, download=False)
+        
         # Download the audio
-        ydl.download([video_url])
+        
 
     audio_file = "audio_file.mp3"
 
@@ -312,7 +312,8 @@ if audio_file is not None:
 
     try:
         # Get the transcript
-        transcription = get_transcript("temp.mp3")
+        with open("temp.mp3", "rb") as audio:
+        transcription = openai.Audio.translate("whisper-1", audio)["text"]
         st.write("Transcription: ", transcription)
 
         # Get the token length of the transcript
