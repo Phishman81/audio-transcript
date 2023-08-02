@@ -62,7 +62,7 @@ def count_tokens(input_data, max_tokens=20000, input_type='text'):
         tokens = tokenizer.tokenize(input_data)
     elif input_type == 'tokens':
         tokens = input_data
-    else:
+    
         raise ValueError("Invalid input_type. Must be 'text' or 'tokens'")
 
     # Print the number of tokens
@@ -116,7 +116,7 @@ def summarize_text(text, model_name="t5-small", max_workers=8):
     if summary_token_len > 2500:
       summarized_text = truncate_text_by_tokens(summarized_text, max_tokens=2500)
 
-    else:
+    
       summarized_text = summarized_text
 
 
@@ -278,10 +278,10 @@ if uploaded_file is not None:
 
 
 # Summarize with either GPT3 or T5 depending on length of transcript:
-if token_count > 3000:
+
   summarized_text = summarize_text(transcription)
   new_token_count = count_tokens(summarized_text)
-else:
+
   summarized_text = gpt_summarize_transcript(transcription,token_count)
   new_token_count = count_tokens(summarized_text) 
 
@@ -324,10 +324,10 @@ if audio_file is not None:
         st.write("Token Count: ", token_count)
 
         # Summarize with either GPT3 or T5 depending on length of transcript:
-        if token_count > 3000:
+        
             summarized_text = summarize_text(transcription)
             new_token_count = count_tokens(summarized_text)
-        else:
+        
             summarized_text = gpt_summarize_transcript(transcription, token_count)
             new_token_count = count_tokens(summarized_text)
 
