@@ -273,7 +273,7 @@ if uploaded_file is not None:
 
 # Get the token length of the transcript
 
-print(token_count)
+
 
 
 
