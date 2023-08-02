@@ -9,7 +9,7 @@ import textwrap
 from concurrent.futures import ThreadPoolExecutor
 import logging
 import warnings
-import yt_dlp
+
 import os
 # Supress warnings
 logging.basicConfig(level=logging.CRITICAL)
