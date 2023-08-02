@@ -28,7 +28,7 @@ warnings.filterwarnings("ignore")
 openai.api_key = st.secrets["openai"]["key"]
 
 
-def count_tokens(input_data, max_tokens=20000, input_type='text'):A
+def count_tokens(input_data, max_tokens=20000, input_type='text'):
     tokenizer = GPT2TokenizerFast.from_pretrained("gpt2")
     
     if input_type == 'text':
