@@ -266,7 +266,9 @@ def generate_long_form_article(transcript_text,token_len):
 
 
 # Get the transcript from the video
-transcription = get_transcript("/path/to/your/audio_file.mp3")
+uploaded_file = st.file_uploader("Upload a file", type=["mp3"])
+if uploaded_file is not None:
+    transcription = get_transcript(uploaded_file)
 
 # Get the token length of the transcript
 token_count = count_tokens(transcription)
