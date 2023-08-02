@@ -1,4 +1,3 @@
-import streamlit as st
 import openai
 import pandas as pd
 
@@ -272,7 +271,7 @@ if uploaded_file is not None:
     transcription = get_transcript(uploaded_file)
 
 # Get the token length of the transcript
-token_count = count_tokens(transcription)
+
 print(token_count)
 
 
@@ -320,7 +319,7 @@ if audio_file is not None:
         st.write("Transcription: ", transcription)
 
         # Get the token length of the transcript
-        token_count = count_tokens(transcription)
+        
         st.write("Token Count: ", token_count)
 
         # Summarize with either GPT3 or T5 depending on length of transcript:
