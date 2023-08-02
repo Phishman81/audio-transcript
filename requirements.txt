@@ -3,5 +3,3 @@ openai
 pandas
 transformers
 yt-dlp
-textwrap3
-concurrent.futures
