@@ -1,6 +1,6 @@
 import openai
 import pandas as pd
-from pytube import YouTube
+
 from transformers import T5Tokenizer
 from transformers import T5Tokenizer, T5ForConditionalGeneration
 from transformers import GPT2TokenizerFast
