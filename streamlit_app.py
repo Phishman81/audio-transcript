@@ -8,7 +8,7 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
-openai.api_key = "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"
+openai.api_key = "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"
 
 def count_tokens(input_data, max_tokens=20000, input_type='text'):
     tokenizer = GPT2TokenizerFast.from_pretrained("gpt2")
