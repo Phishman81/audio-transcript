@@ -70,6 +70,7 @@ if audio_file is not None:
         audio_file_size = os.path.getsize("temp.mp3")
         if audio_file_size > 25 * 1024 * 1024:  # 25MB in bytes
             st.write("Transcribing audio...")
+            progress_bar = st.progress(0)
             chunks = split_audio("temp.mp3")
             progress_bar = st.progress(0)
             transcriptions = []
