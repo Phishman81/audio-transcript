@@ -80,15 +80,15 @@ if st.session_state.stage == 1:
                 
     if st.button("start transcription now"):
     
-                progress_bar = st.progress(0)
-                chunks = split_audio("temp.mp3")
-                progress_bar = st.progress(0)
-                transcriptions = []
-                for i, chunk in enumerate(chunks):
-                    progress_bar.progress(i / len(chunks))
+        progress_bar = st.progress(0)
+        chunks = split_audio("temp.mp3")
+        progress_bar = st.progress(0)
+         transcriptions = []
+        for i, chunk in enumerate(chunks):
+                progress_bar.progress(i / len(chunks))
                     with open("temp_chunk.mp3", "wb") as f:
                         chunk.export(f, format="mp3")
-                    with open("temp_chunk.mp3", "rb") as audio:
+                        with open("temp_chunk.mp3", "rb") as audio:
                         transcription_chunk = openai.Audio.translate("whisper-1", audio)["text"]
                         transcriptions.append(transcription_chunk)
                 transcription = " ".join(transcriptions)
