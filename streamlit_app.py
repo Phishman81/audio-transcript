@@ -112,8 +112,9 @@ if st.session_state.stage == 2:
             if st.session_state.summarized_text:
                 st.write("Summarized Text: ", st.session_state.summarized_text)
                 st.session_state.stage = 3  # or reset to 0 if you want the process to be repeatable
-                except Exception as e:
-                    st.write("An error occurred: ", str(e))
+    except Exception as e:
+        st.write("An error occurred: ", str(e))
+
 
 # Functions for token count, truncation, summarization, etc.
 def count_tokens(input_data, max_tokens=20000, input_type='text'):
