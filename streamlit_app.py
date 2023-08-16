@@ -25,23 +25,9 @@ openai.api_key = st.secrets["openai"]["key"]
 
 def split_audio(file_path, min_silence_len=500, silence_thresh=-40, chunk_length=30000):
     st.write("Splitting audio into smaller chunks...")
-    """
-    Split an audio file into smaller chunks based on silence between audio segments.
-    
-    Parameters:
-    - file_path: path to the audio file.
-    - min_silence_len: minimum length of silence to consider for splitting (in ms).
-    - silence_thresh: silence threshold (in dB). Anything quieter than this will be considered silence.
-    - chunk_length: desired length of each chunk (in ms). Defaults to 30 seconds.
-    
-    Returns:
-    - List of audio chunks as pydub.AudioSegment objects.
-    progress_bar = st.progress(0)
-    """
     
     # Load audio file
     audio = AudioSegment.from_mp3(file_path)
-        progress_bar.progress(i / len(chunks))
     
     # Split audio into chunks based on silence
     chunks = split_on_silence(
@@ -53,15 +39,18 @@ def split_audio(file_path, min_silence_len=500, silence_thresh=-40, chunk_length
     
     # If chunks are longer than desired chunk_length, split them further
     split_chunks = []
-    for chunk in chunks:
+    for i, chunk in enumerate(chunks):
         if len(chunk) > chunk_length:
             num_mini_chunks = len(chunk) // chunk_length
-            for i in range(num_mini_chunks):
-                start_time = i * chunk_length
+            for j in range(num_mini_chunks):
+                start_time = j * chunk_length
                 end_time = start_time + chunk_length
                 split_chunks.append(chunk[start_time:end_time])
         else:
             split_chunks.append(chunk)
+        
+        # Here's where you'd update the progress bar within the function
+        progress_bar.progress(i / len(chunks))
             
     return split_chunks
 
@@ -79,12 +68,12 @@ if audio_file is not None:
         # Splitting the audio into smaller chunks if file size exceeds 25MB
         audio_file_size = os.path.getsize("temp.mp3")
         if audio_file_size > 25 * 1024 * 1024:  # 25MB in bytes
-        st.write("Transcribing audio...")
+            st.write("Transcribing audio...")
             chunks = split_audio("temp.mp3")
-        progress_bar = st.progress(0)
+            progress_bar = st.progress(0)
             transcriptions = []
-            for chunk in chunks:
-            progress_bar.progress(i / len(chunks))
+            for i, chunk in enumerate(chunks):
+                progress_bar.progress(i / len(chunks))
                 with open("temp_chunk.mp3", "wb") as f:
                     chunk.export(f, format="mp3")
                 with open("temp_chunk.mp3", "rb") as audio:
