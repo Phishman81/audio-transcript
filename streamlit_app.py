@@ -21,6 +21,7 @@ password = password_placeholder.text_input("Enter the password", type="password"
 if password != correct_password:
     st.error("The password you entered is incorrect.")
     st.stop()
+    audio_file = st.file_uploader("Upload MP3 Audio File", type=["mp3"])
 
 # Get the OpenAI key from Streamlit secrets
 openai.api_key = st.secrets["openai"]["key"]
