@@ -77,7 +77,9 @@ if st.session_state.stage == 1:
             # Splitting the audio into smaller chunks if file size exceeds 25MB
             audio_file_size = os.path.getsize("temp.mp3")
             if audio_file_size > 25 * 1024 * 1024:  # 25MB in bytes
-                st.write("Transcribing audio...")
+                
+    if st.button("start transcription now"):
+    
                 progress_bar = st.progress(0)
                 chunks = split_audio("temp.mp3")
                 progress_bar = st.progress(0)
@@ -103,7 +105,9 @@ if st.session_state.stage == 1:
 # Stage 2: Summarize the transcription
 if st.session_state.stage == 2:
     try:
-        summarized_text = summarize_text(transcription)
+        
+    if st.button("summarize now"):
+    
         st.write("Summarized Text: ", summarized_text)
         st.session_state.stage = 3  # or reset to 0 if you want the process to be repeatable
     except Exception as e:
