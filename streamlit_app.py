@@ -53,7 +53,6 @@ def split_audio(file_path, min_silence_len=500, silence_thresh=-40, chunk_length
             
     return split_chunks
 
-
 st.title("Transcription and Summary App")
 
 # Initialize the processing stage if it's not set
@@ -77,21 +76,19 @@ if st.session_state.stage == 1:
             # Splitting the audio into smaller chunks if file size exceeds 25MB
             audio_file_size = os.path.getsize("temp.mp3")
             if audio_file_size > 25 * 1024 * 1024:  # 25MB in bytes
-                
-    if st.button("start transcription now"):
-    
-                progress_bar = st.progress(0)
-                chunks = split_audio("temp.mp3")
-                progress_bar = st.progress(0)
-                transcriptions = []
-                for i, chunk in enumerate(chunks):
-                    progress_bar.progress(i / len(chunks))
-                    with open("temp_chunk.mp3", "wb") as f:
-                        chunk.export(f, format="mp3")
-                    with open("temp_chunk.mp3", "rb") as audio:
-                        transcription_chunk = openai.Audio.translate("whisper-1", audio)["text"]
-                        transcriptions.append(transcription_chunk)
-                transcription = " ".join(transcriptions)
+                if st.button("start transcription now"):
+                    progress_bar = st.progress(0)
+                    chunks = split_audio("temp.mp3")
+                    progress_bar = st.progress(0)
+                    transcriptions = []
+                    for i, chunk in enumerate(chunks):
+                        progress_bar.progress(i / len(chunks))
+                        with open("temp_chunk.mp3", "wb") as f:
+                            chunk.export(f, format="mp3")
+                        with open("temp_chunk.mp3", "rb") as audio:
+                            transcription_chunk = openai.Audio.translate("whisper-1", audio)["text"]
+                            transcriptions.append(transcription_chunk)
+                    transcription = " ".join(transcriptions)
             else:
                 with open("temp.mp3", "rb") as audio:
                     transcription = openai.Audio.translate("whisper-1", audio)["text"]
@@ -105,11 +102,9 @@ if st.session_state.stage == 1:
 # Stage 2: Summarize the transcription
 if st.session_state.stage == 2:
     try:
-        
-    if st.button("summarize now"):
-    
-        st.write("Summarized Text: ", summarized_text)
-        st.session_state.stage = 3  # or reset to 0 if you want the process to be repeatable
+        if st.button("summarize now"):
+            st.write("Summarized Text: ", summarized_text)
+            st.session_state.stage = 3  # or reset to 0 if you want the process to be repeatable
     except Exception as e:
         st.write("An error occurred: ", str(e))
 
@@ -166,7 +161,8 @@ def gpt_summarize_transcript(transcript_text, token_len):
         stop=None,
         temperature=0.5,
     )
-    summary = response['choices'][0]['message']['content']
-    with open("transcript_summary.txt", "w") as file:
-        file.write(summary)
-    return summary.strip()
+    summary = response.choices[0].message["content"]
+    return summary
+
+# Additional functionalities and features can be added as per requirements.
+
