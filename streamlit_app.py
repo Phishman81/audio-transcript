@@ -153,7 +153,7 @@ def gpt_summarize_transcript(transcript_text, token_len):
     with open("transcript_summary.txt", "w") as file:
         file.write(summary)
     return summary.strip()
-text):
+
     # Call OpenAI API to get the summary using ChatGPT
     response = openai.Completion.create(
         engine="text-davinci-003",
