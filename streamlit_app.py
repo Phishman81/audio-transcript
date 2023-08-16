@@ -161,8 +161,7 @@ def gpt_summarize_transcript(transcript_text, token_len):
         stop=None,
         temperature=0.5,
     )
-    summary = response.choices[0].message["content"]
-    return summary
-
-# Additional functionalities and features can be added as per requirements.
-
+    summary = response['choices'][0]['message']['content']
+    with open("transcript_summary.txt", "w") as file:
+        file.write(summary)
+    return summary.strip()
