@@ -21,7 +21,8 @@ password = password_placeholder.text_input("Enter the password", type="password"
 if password != correct_password:
     st.error("The password you entered is incorrect.")
     st.stop()
-    audio_file = st.file_uploader("Upload MP3 Audio File", type=["mp3"])
+if 'uploaded_file' not in st.session_state:
+    st.session_state.uploaded_file = st.file_uploader("Upload MP3 Audio File", type=["mp3"])
 
 # Get the OpenAI key from Streamlit secrets
 openai.api_key = st.secrets["openai"]["key"]
@@ -108,6 +109,7 @@ if st.session_state.stage == 1:
 if st.session_state.stage == 2:
     try:
         if st.button("summarize now"):
+if st.session_state.summarized_text:
             st.write("Summarized Text: ", st.session_state.summarized_text)
             st.session_state.stage = 3  # or reset to 0 if you want the process to be repeatable
     except Exception as e:
