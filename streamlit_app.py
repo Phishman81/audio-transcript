@@ -24,6 +24,7 @@ if password != correct_password:
 openai.api_key = st.secrets["openai"]["key"]
 
 def split_audio(file_path, min_silence_len=500, silence_thresh=-40, chunk_length=30000):
+    st.write("Splitting audio into smaller chunks...")
     """
     Split an audio file into smaller chunks based on silence between audio segments.
     
@@ -35,10 +36,12 @@ def split_audio(file_path, min_silence_len=500, silence_thresh=-40, chunk_length
     
     Returns:
     - List of audio chunks as pydub.AudioSegment objects.
+    progress_bar = st.progress(0)
     """
     
     # Load audio file
     audio = AudioSegment.from_mp3(file_path)
+        progress_bar.progress(i / len(chunks))
     
     # Split audio into chunks based on silence
     chunks = split_on_silence(
@@ -76,9 +79,12 @@ if audio_file is not None:
         # Splitting the audio into smaller chunks if file size exceeds 25MB
         audio_file_size = os.path.getsize("temp.mp3")
         if audio_file_size > 25 * 1024 * 1024:  # 25MB in bytes
+        st.write("Transcribing audio...")
             chunks = split_audio("temp.mp3")
+        progress_bar = st.progress(0)
             transcriptions = []
             for chunk in chunks:
+            progress_bar.progress(i / len(chunks))
                 with open("temp_chunk.mp3", "wb") as f:
                     chunk.export(f, format="mp3")
                 with open("temp_chunk.mp3", "rb") as audio:
