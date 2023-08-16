@@ -25,6 +25,7 @@ openai.api_key = st.secrets["openai"]["key"]
 
 def split_audio(file_path, min_silence_len=500, silence_thresh=-40, chunk_length=30000):
     st.write("Splitting audio into smaller chunks...")
+    progress_bar = st.progress(0)
     
     # Load audio file
     audio = AudioSegment.from_mp3(file_path)
