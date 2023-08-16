@@ -1,4 +1,8 @@
 import streamlit as st
+
+if 'summarized_text' not in st.session_state:
+    st.session_state.summarized_text = ""
+
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
 import os
@@ -103,7 +107,7 @@ if st.session_state.stage == 1:
 if st.session_state.stage == 2:
     try:
         if st.button("summarize now"):
-            st.write("Summarized Text: ", summarized_text)
+            st.write("Summarized Text: ", st.session_state.summarized_text)
             st.session_state.stage = 3  # or reset to 0 if you want the process to be repeatable
     except Exception as e:
         st.write("An error occurred: ", str(e))
