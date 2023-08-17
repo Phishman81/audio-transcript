@@ -78,7 +78,6 @@ if st.session_state.stage == 1:
             # Splitting the audio into smaller chunks if file size exceeds 25MB
             audio_file_size = os.path.getsize("temp.mp3")
             if audio_file_size > 25 * 1024 * 1024:  # 25MB in bytes
-                //if st.button("start transcription now"):
                     progress_bar = st.progress(0)
                     chunks = split_audio("temp.mp3")
                     progress_bar = st.progress(0)
