@@ -35,6 +35,7 @@ def split_audio(file_path, min_silence_len=500, silence_thresh=-40, chunk_length
         silence_thresh=silence_thresh,
         keep_silence=100
     )
+    st.write(chunks)
     
     # If chunks are longer than desired chunk_length, split them further
     split_chunks = []
