@@ -69,6 +69,7 @@ if st.session_state.stage == 0:
 if st.session_state.stage == 1:
     transcription=''
     if audio_file is not None:
+        print("Test")
         try:
             # Write to a temp file
             with open("temp.mp3", "wb") as f:
